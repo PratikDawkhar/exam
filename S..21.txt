@@ -1,0 +1,113 @@
+slip.21
+
+1.
+
+#include <stdio.h>
+#include <string.h>
+#define max 20
+int top=-1, stack[max];
+void push(char x)
+{
+	stack[++top]=x;
+}
+char pop()
+{
+	//printf("%c",stack[top--]);
+	return stack[top--];
+}
+int main()
+{
+	char str[max];
+	int i;
+	printf("Enter a string:");
+	gets(str);
+	  
+	for(i=0;i<strlen(str);i++)
+		push(str[i]);
+	for(i=0;i<strlen(str);i++)
+		str[i]=pop();	
+	printf("Reversed String is:%s\n\n",str);	 
+	return 0;
+}
+----------------------------------------------------------------------------------
+2..
+//insertion.c
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+typedef struct
+{
+	char name[30];
+	int age;
+	int salary;
+}RECORD;
+RECORD emp[100];
+
+int readFile()
+{
+	int i=0;
+	FILE *fp;
+	if((fp=fopen("emp","r"))!=NULL)
+	{
+		while(! feof(fp))
+		{
+		      fscanf(fp,"%s%d%d", emp[i].name, &emp[i].age, &emp[i].salary);
+			i++;
+		}
+	}
+	return i-1; // number of records read
+}
+
+void writeFile(int n)
+{
+	int i=0;
+	FILE *fp;
+	if((fp=fopen("sortedemp2","w"))!=NULL)
+	{
+		for(i=0;i<n; i++)
+		{
+			fprintf(fp,"%s %d %d\n", emp[i].name, emp[i].age, emp[i].salary);
+		}
+	}
+}
+
+void display(int n)
+{
+	int i=0;
+	for(i=0;i<n; i++)
+	{
+		printf("%s\t%d\t%d\n", emp[i].name, emp[i].age, emp[i].salary);
+	}
+}
+
+void isort(int n)
+{
+	int i,j;
+	RECORD temp;
+	for(i=1;i<n;i++)
+	{
+		temp=emp[i];
+		j=i-1;
+		while(j>=0 && strcmp(emp[j].name,temp.name)>0)
+		{
+			emp[j+1]=emp[j];
+			j=j-1;
+		}
+		emp[j+1]=temp;
+	}
+}
+
+int main()
+{
+	int n,i; 
+	n=readFile();
+	if(n>0)
+    	{
+	    for(i=0; i<n; i++)
+		printf("%s %d %d\n", emp[i].name, emp[i].age, emp[i].salary);
+	    isort(n);
+	    writeFile(n);
+    	}	
+	return 0;
+}

@@ -1,0 +1,196 @@
+slip..8
+
+1.
+//.c file
+
+#include<stdio.h>
+#include"singly.h"
+int main()
+{
+	int choice;
+	start=NULL;
+	while(1)//infinite
+	{
+	printf("\n---------------------------------------------");		
+		printf("\n1.Create\n");
+		printf("2.Display\n");
+		printf("3.Delete Specific Element:\n");
+		printf("4.Exit\n");
+		printf("\nEnter your choice :");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:create();
+				break;
+			case 2:display();
+				break;
+			case 3:delete_element();
+				break;
+			case 4:exit(0);
+			default:printf("Invalid choice\n");
+		}//switch
+	}//while
+}//main()
+--------------------------------------------------------------------------
+//.h file
+
+#include<stdio.h>
+#include<stdlib.h>
+//Self Referential Structure
+struct node
+{
+	char data;
+	struct node *next;
+}*start;
+void create()
+{
+	struct node *temp,*q;
+	temp=(struct node*)malloc(sizeof(struct node));//temp:data|*next
+	printf("Enter the data :");
+	scanf(" %c",&temp->data);
+	temp->next=NULL;
+	if(start==NULL)
+	{
+		start=temp;
+	}
+	else
+	{
+		q=start;
+				      
+		while(q->next!=NULL)
+		{
+			q=q->next;
+		}
+		q->next=temp;
+	}		     
+			                         
+} 
+void delete_element()
+{
+	struct node *temp,*p;			
+	int n,t;				
+	//if list is empty
+	if(start==NULL)
+	{
+		printf("\nList is Empty\n");
+		return;
+	}
+	printf("\nEnter the element:");	   
+	scanf("%d",&n);
+	t=1;             
+	temp=start;
+	while(temp!=NULL)
+	{
+		if(temp->data==n)
+		{
+			if(t==1)
+			{
+			  start=start->next;
+			  free(temp);
+			  printf("\nNode Deleted Successfully\n");
+			  return;
+			}
+			else
+			{
+			    p->next=temp->next;
+		            free(temp);
+		            printf("\nNode Deleted Successfully\n");
+		            return;
+		        }
+		}
+		p=temp;
+		temp=temp->next;
+		t=t+1;
+	}
+	printf("Node Not Found");
+}
+void display()
+{
+	struct node *temp;
+	temp=start;       
+			  
+	printf("Linked list is :");   
+	while(temp!=NULL)
+	{
+		printf("%c %d->",temp->data,temp->next);
+		temp=temp->next;
+	}
+				
+}
+-----------------------------------------------------------------------------
+2..
+
+//.c file
+
+#include<stdio.h>
+#include<stdlib.h>
+#define SIZE 10
+int top1=-1, top2=-1, s1[SIZE],s2[SIZE];
+void push1()
+	{
+		int n1;
+		if(top1==SIZE-1)
+			printf("FULL");
+		else
+		{
+			printf("Enter value: ");
+			scanf("%d",&n1);
+			top1++;
+			s1[top1]=n1;
+		}
+	}
+void pop1()
+	{
+		if (top1==-1)
+		{
+			printf("\nStack1 Empty");
+		}
+		else
+		{
+			printf("\npopped value = %d\n",s1[top1]);
+			top1--;
+		}		
+	}
+	
+int push2()
+	{
+		int n2;
+		if(top2==SIZE-1)
+			printf("FULL");
+		else
+		{
+			printf("Enter value: ");
+			scanf("%d",&n2);
+			top2++;
+			s2[top2]=n2;
+		}
+	}
+void pop2()
+	{
+		if (top2==-1)
+		{
+			printf("\nStack2 Empty");
+		}
+		else
+		{
+			printf("\npopped value = %d\n",s2[top2]);
+			top2--;
+		}		
+	}
+	
+void iden()
+{	
+		int i,j;
+		i=top1;
+		j=top2;
+		for(;i>=0 || j>=0;i--,j--)
+		{
+			if(s1[i]!=s2[j])
+			{
+				printf("\nBoth stakcs are not identical\n");
+				return;
+			}
+		}
+		printf("\nBoth stacks are identical\n");
+	}
+------------------------------------------------------------------------

@@ -1,0 +1,221 @@
+slip..27
+
+1
+
+#include<stdio.h>
+#include<string.h>
+typedef struct record
+{
+  	char name[30];
+	int age;
+	int salary;
+}record;
+
+record a[20];
+void mergesort(int i,int j);
+void merge(int i1,int j1,int i2,int j2);
+
+int fileread()
+{
+    FILE *fp;
+    int i=0;
+
+    fp=fopen("emp1","r");
+    if(fp==NULL)
+        printf("File Not Exist");
+    else
+    {
+        while(!feof(fp))
+        {
+            fscanf(fp,"%s%d%d", a[i].name, &a[i].age,&a[i].salary);
+            i++;
+        }
+        fclose(fp);
+    }
+    return i-1;
+}
+
+void writeFile(int n)
+{
+	int i=0;
+	FILE *fp;
+	if((fp=fopen("sortedemponname","w"))!=NULL)
+	{
+		for(i=0;i<n; i++)
+		{
+			fprintf(fp,"%s %d %d\n", a[i].name, a[i].age, a[i].salary);
+		}
+	}
+}
+
+void mergesort(int i,int j)
+{
+	int mid;
+	if(i<j)
+	{
+	   mid=(i+j)/2;
+	   mergesort(i,mid);
+	   mergesort(mid+1,j);
+	   merge(i,mid,mid+1,j);
+	}
+}
+void merge(int i1,int j1,int i2,int j2)
+{
+	record temp[20];
+	int i,j,k;	
+	i=i1;
+	j=i2;
+	k=0;
+	
+	while(i<=j1 && j<=j2)
+	{
+		if(strcmp(a[i].name,a[j].name)<0)
+		   temp[k++]=a[i++];
+		   
+		else
+		   temp[k++]=a[j++];
+	}
+	
+	while(i<=j1)
+	   temp[k++]=a[i++];
+
+	while(j<=j2)
+	   temp[k++]=a[j++];
+
+	for(i=i1,j=0;i<=j2;i++,j++)
+	   a[i]=temp[j];
+}
+
+//Main
+int main()
+{
+    int i, n;
+    n = fileread(a);
+    if(n>0)
+    {
+    	for(i=0; i<n; i++)
+        	printf("%s %d %d\n", a[i].name, a[i].age,a[i].salary);
+	mergesort(0,n-1);
+	writeFile(n);
+    }
+}
+-----------------------------------------------------------------------
+
+2.
+
+#include<stdio.h>
+#include<malloc.h>
+//Self Referential Structure
+struct link
+{
+       int coeff;
+       int pow;
+       struct link *next;	
+};
+
+struct link *poly1=NULL,*poly2=NULL,*poly=NULL;
+
+void create(struct link *node)
+{
+ 	char ch;
+ 	do
+ 	{
+	  printf("Enter coeff:");////4|5|1000->3|4|2000->6|2|3000->coeff|pow|NULL
+	  scanf("%d",&node->coeff);//
+	  printf("Enter power:");
+	  scanf("%d",&node->pow);//
+	  node->next=(struct link*)malloc(sizeof(struct link));//4|5|1000->coeff|pow|NULL
+	  node=node->next;					//	     node
+	  node->next=NULL;
+	  printf("Add more terms?(y/n):");
+	  scanf(" %c",&ch);
+ 	}while(ch=='y' || ch=='Y');
+}//create()
+
+void show(struct link *node)
+{
+	 while(node->next!=NULL)
+	 {
+		  printf("%dX^%d",node->coeff,node->pow);//4X^5+3X^4
+		  node=node->next;
+		  if(node->next!=NULL)
+	   		printf("+");
+	 }
+}//show()
+
+void polyadd(struct link *poly1,struct link *poly2,struct link *poly)//poly=NULL
+{
+     while(poly1->next &&  poly2->next)
+     {
+	      if(poly1->pow>poly2->pow)//if(0>1)false
+	      {
+		       poly->pow=poly1->pow;//5|8|1000->4|5|NULL
+		       poly->coeff=poly1->coeff;
+		       poly1=poly1->next;
+	      }
+	      else if(poly1->pow<poly2->pow)//if(0<1)true
+	      {
+		       poly->pow=poly2->pow;//coeff|8|addr
+		       poly->coeff=poly2->coeff;//5|8|addr
+		       poly2=poly2->next;
+	      }
+	      else
+	      {
+		       poly->pow=poly1->pow;
+		       poly->coeff=poly1->coeff+poly2->coeff;
+		       poly1=poly1->next;
+		       poly2=poly2->next;
+	      }
+	      
+	      //5|8|1000->4|5|2000->4|4|3000->6|2|4000->4|1|5000->9|0|6000->coeff|pow|NULL
+	      //	   					     		poly
+	      
+	      poly->next=(struct link *)malloc(sizeof(struct link));////5|8|1000->coeff|pow|NULL
+	      poly=poly->next;						//		poly
+	      poly->next=NULL;
+     }//while
+     while(poly1->next || poly2->next)
+     {
+	      if(poly1->next)
+	      {
+		       poly->pow=poly1->pow;
+		       poly->coeff=poly1->coeff;
+		       poly1=poly1->next;
+	      }
+	      if(poly2->next)
+	      {
+		       poly->pow=poly2->pow;
+		       poly->coeff=poly2->coeff;
+		       poly2=poly2->next;
+	       }
+	       poly->next=(struct link *)malloc(sizeof(struct link));
+	       poly=poly->next;
+	       poly->next=NULL;
+     }//while
+}//polyadd()
+
+int main()
+{
+      poly1=(struct link *)malloc(sizeof(struct link));
+      poly2=(struct link *)malloc(sizeof(struct link));
+      poly=(struct link *)malloc(sizeof(struct link));
+      printf("Enter First Polynomial:\n");
+      printf("---------------------------------------\n");
+      create(poly1);
+      printf("\n-------------------------------------\n");
+      printf("Enter Second Polynomial:\n");
+      printf("---------------------------------------\n");
+      create(poly2);
+      printf("---------------------------------------\n");
+      printf("First Polynomial:");
+      show(poly1);
+      printf("\n---------------------------------------\n");
+      printf("Second Polynomial:");
+      show(poly2);
+      polyadd(poly1,poly2,poly);
+      printf("\n---------------------------------------\n");
+      printf("Added polynomial:");
+      show(poly);
+      printf("\n\n");
+      return 0;
+}

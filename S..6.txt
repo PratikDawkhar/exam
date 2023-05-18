@@ -1,0 +1,154 @@
+slip..6
+
+1.
+
+#include<stdio.h>
+#include<stdlib.h>
+void generate(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+	a[i]=rand()%100;
+}
+void display(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+		printf("  %d\t",a[i]);
+}
+void sort(int a[10],int n)
+{
+	int i,j,temp;
+	for(i=0;i<n-1;i++)
+	{
+		for(j=i+1;j<n;j++)
+		{
+			if(a[i]>a[j])
+			{
+				temp=a[i];
+				a[i]=a[j];
+				a[j]=temp;
+			}
+		}
+	}
+}
+void main()
+{
+	int i,a[10],n;
+	printf("Enter numbers of elements:");
+	scanf("%d",&n);
+	generate(a,n);
+	printf("Randomely generated elements are:\n");
+	display(a,n);
+	sort(a,n);
+	printf("\nSorted elements are:\n");
+	display(a,n);
+}
+-------------------------------------------------------------------------------
+2.
+
+//.c file
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include "dyqueue.h"
+int main()
+{
+	int ch;
+	while(1)
+	{
+		printf("\n----Dynamic Queue----\n");
+		printf("\n1.Init\n");
+		printf("2.Enqueue\n");
+		printf("3.Dequeue\n");
+		printf("4.Peek\n");
+		printf("5.Diplay\n");
+		printf("6.Exit\n");
+		printf("Enter your choice: ");
+		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1:init();break;
+			case 2:enque(); break;
+			case 3:deque();break;
+			case 4:peek();break;
+			case 5:display(); break;
+			case 6:exit(0);
+		}//switch
+	}//while
+}//main()
+-----------------------------------------------------------------------
+
+//.h file
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+	int data;
+	struct node *next;
+}*front,*rear,*temp;
+void init()
+{
+	front=NULL;
+	rear=NULL; 
+	printf("Dynamic Queue is initialized\n");
+}
+void enque()
+{
+	temp=(struct node*)malloc(sizeof(struct node));
+	printf("\nEnter the value:");
+	scanf("%d",&temp->data);
+	temp->next=NULL;
+	if(rear==NULL)
+	{	      
+		front=temp;
+		rear=temp; 
+	}
+	else
+	{
+		rear->next=temp;
+		rear=temp;      
+	}
+	printf("\nNew Node Inserted\n");
+}
+void deque()			
+{				
+	if(front==NULL)
+	{
+		printf("\nQueue is empty\n");
+		rear=NULL;
+	}
+	else	
+	{	
+		temp=front;
+		front=front->next;
+		printf("\nDeleted node is %d",temp->data);
+		free(temp);
+	}		  
+}
+void peek()			
+{				
+	if(front==NULL)
+		printf("\nQueue is empty\n");
+	else	
+		printf("\nElement at front end is %d",front->data);
+}
+void display()
+{
+	if(front==NULL)
+	{
+		printf("\nQueue is empty\n");
+	}
+	else	
+	{	
+		printf("\nQueue contents are:");
+		temp=front;
+		while(temp!=NULL)
+		{
+			printf("%d ",temp->data);
+			temp=temp->next;
+		}//while
+	}//else
+}

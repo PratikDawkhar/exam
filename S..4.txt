@@ -1,0 +1,131 @@
+slip..4.
+
+1
+
+//.c file
+#include<stdio.h>
+#include<stdlib.h>
+void generate(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+	a[i]=rand()%100;
+}
+void display(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+		printf("  %d\t",a[i]);
+}
+void sort(int a[10],int n)
+{
+	int i,j,temp;
+	for(i=0;i<n-1;i++)
+	{
+		for(j=0;j<n-i-1;j++)
+		{
+			if(a[j]>a[j+1])
+			{
+				temp=a[j];
+				a[j]=a[j+1];
+				a[j+1]=temp;
+			}
+		}
+	}
+}
+void main()
+{
+	int i,a[10],n;
+	printf("Enter numbers of elements:");
+	scanf("%d",&n);
+	generate(a,n);
+	printf("Randomely generated elements are:\n");
+	display(a,n);
+	sort(a,n);
+	printf("\nSorted elements are:\n");
+	display(a,n);
+}
+-----------------------------------------------------------
+2..
+
+//C file for static queue
+
+#include<stdio.h>
+#include<stdlib.h>
+#include "stqueue.h"
+int main()
+{
+	int ch;
+	while(1)
+	{
+		printf("\n----Static Queue----\n");
+		printf("\n1.Init\n");
+		printf("2.Enqueue\n");
+		printf("3.Dequeue\n");
+		printf("4.reverse\n");
+		printf("5.Exit\n");
+		printf("Enter your choice: ");
+		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1:init();  break;
+			case 2:enque(); break;
+			case 3:deque(); break;
+			case 4:reverse(); break;
+			case 5:exit(0);
+		}//switch
+	}//while
+}//main()
+-----------------------------------------------------------------------------
+//.h file
+
+#include<stdio.h>
+#define MAX 3
+int a[MAX],front,rear;
+
+void init()
+{
+	front=-1;
+	rear=-1; 
+	printf("\nStatic Queue is initialized\n");
+}
+void reverse()
+{
+	int i,j,t;
+	for(i=front,j=rear;i<j;i++,j--)
+	{
+		t=a[i];
+		a[i]=a[j];
+		a[j]=t;
+	}
+	printf("q is reversed");
+}
+void enque()
+{
+	int number;
+	if(rear==MAX-1)
+		printf("\nQueue is full\n");
+	else
+	{
+		printf("\nEnter the value:");
+		scanf("%d",&number);
+		front=0;
+		rear=rear+1;
+		a[rear]=number;	 
+		printf("\nValue Enqueued\n");
+	}
+}
+
+void deque()
+{
+	if(front==-1 || rear==front-1)
+		printf("\nQueue is empty\n");
+	else
+	{
+		printf("\nDeleted value is %d",a[front]);	
+		front=front+1;
+	}
+}
+
+
+

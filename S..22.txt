@@ -1,0 +1,159 @@
+slip..22
+
+1.
+
+//.c file
+
+#include<stdio.h>
+#include<stdlib.h>
+#include "stqueue.h"
+int main()
+{
+	int ch;
+	while(1)
+	{
+		printf("\n----Static Queue----\n");
+		printf("\n1.Init\n");
+		printf("2.Enqueue\n");
+		printf("3.Dequeue\n");
+		printf("4.Peek\n");
+		printf("5.IsEmpty\n");
+		printf("6.IsFull\n");
+		printf("7.Exit\n");
+		printf("Enter your choice: ");
+		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1:init();  break;
+			case 2:enque(); break;
+			case 3:deque(); break;
+			case 4:peek(); break;
+			case 5:isempty(); break;
+			case 6:isfull(); break;
+			case 7:exit(0);
+		}//switch
+	}//while
+}//main()
+--------------------------------------------------------------------
+//.h file
+
+#include<stdio.h>
+#define MAX 3
+int a[MAX],front,rear;
+
+void init()
+{
+	front=-1;
+	rear=-1; 
+	printf("\nStatic Queue is initialized\n");
+}
+
+void enque()
+{
+	int number;
+	if(rear==MAX-1)
+		printf("\nQueue is full\n");
+	else
+	{
+		printf("\nEnter the value:");
+		scanf("%d",&number);
+		front=0;
+		rear=rear+1;
+		a[rear]=number;	 
+		printf("\nValue Enqueued\n");
+	}
+}
+
+void deque()
+{
+	if(front==-1 || rear==front-1)
+		printf("\nQueue is empty\n");
+	else
+	{
+		printf("\nDeleted value is %d",a[front]);	
+		front=front+1;
+	}
+}
+
+void isfull()
+{
+	if(rear==MAX-1)
+		printf("\nQueue is full\n");
+	else
+		printf("\nQueue is not full");	
+}
+
+void isempty()
+{
+	if(front==-1 || rear==front-1)
+		printf("\nQueue is empty\n");
+	else
+		printf("\nQueue is not empty");	
+}
+
+void peek()
+{
+	if(front==-1 || rear==front-1)
+		printf("\nQueue is empty\n");
+	else
+		printf("\nValue at front is %d",a[front]);	
+}
+-----------------------------------------------------------------------------------
+2.
+
+#include<stdio.h>
+#include<string.h>
+typedef struct city
+{
+	int code;
+	char name[20];
+}city;
+void sentinal(int n);
+city a[20];
+int fileread()
+{
+	int i;
+	FILE *fp;
+	fp=fopen("cities.txt","r");
+	if(fp==NULL)
+		printf("file not exist");
+	else
+	{
+		while(!feof(fp))
+		{
+			fscanf(fp,"%s%d",a[i].name,&a[i].code);
+			i++;
+		}
+		fclose(fp);
+	}
+	return i-1;
+}
+void main()
+{
+	int i,n;
+	n=fileread();
+	if(n>0)
+	{
+		for(i=0;i<n;i++)
+			printf("%s%d",a[i].name,a[i].code);
+		sentinal(n);
+	}
+}
+void sentinal(int n)
+{
+	int i;
+	char str[20];
+	printf("Enter city");
+	scanf("%s",str);
+	strcpy(a[n].name,str);
+	for(i=0;;i++)
+	{
+		if(strcmp(str,a[i].name)==0)
+			break;
+	}
+	if(i<n)
+		printf("city code %d",a[i].code);
+	else
+		printf("City not found");
+}
+		 

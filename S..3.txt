@@ -1,0 +1,96 @@
+slip..3
+
+1.
+//.c file
+#include<stdio.h>
+#include<stdlib.h>
+void sort(int a[10],int n);
+void main()
+{
+	int i,n,a[10];
+	printf("Enter no of elements:");
+	scanf("%d",&n);
+	printf("enter the elements:");
+	for(i=0;i<n;i++)
+		scanf("%d",&a[i]);
+	sort(a,n);
+	printf("Sorted elements are:");
+	for(i=0;i<n;i++)
+		printf("  %d",a[i]);
+}
+void sort(int a[10],int n)
+ {
+ 	int i,j,temp;
+ 	for(i=1;i<n;i++)
+ 	{ 
+ 		temp=a[i];
+ 		j=i-1;
+ 		while(j>=0&& a[j]<temp)
+ 		{
+ 			a[j+1]=a[j];
+ 			j=j-1;
+ 		}
+ 		a[j+1]=temp;
+ 	}
+ }
+----------------------------------------------------------------
+2.
+
+//.c
+
+#include<stdio.h>
+#include<ctype.h>
+
+int stack[20],top=-1;
+
+void push(int x)
+{
+    stack[++top] = x;  
+}		       
+		       	
+int pop()
+{
+    return stack[top--]; 
+}			 
+
+int main()
+{
+    char exp[20];
+    char *e;
+    int n1,n2,n3,num;
+    printf("Enter the Postfix Expression:");
+    scanf("%s",exp);
+    e = exp;			  
+    while(*e != '\0')
+    {
+    	//if scanned symbol is operand
+	if(isdigit(*e))
+	{
+	    num = *e-48;
+	    push(num);
+	}
+	//if scanned symbol is operator
+	else
+	{
+	    n1 = pop();
+	    n2 = pop();
+	    switch(*e)
+	    {
+		case '+':n3 = n1 + n2;
+			 break;
+		case '-':n3 = n2 - n1;
+			 break;
+		case '*':n3 = n1 * n2;
+			 break;
+		case '/':n3 = n2 / n1;
+			 break;
+	    }//switch
+	    push(n3);
+	}//else
+	e++;
+    }//while
+    printf("\nThe Result Of Postfix Evaluation=%d\n\n",pop());
+    return 0;
+}//main()
+//23+4*5/
+//Output:4

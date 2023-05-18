@@ -1,0 +1,150 @@
+slip.2
+
+1.
+
+//.c file
+#include<stdio.h>
+#include"singly.h"
+int main()
+{
+	int choice;
+	start=NULL;
+	while(1)//infinite
+	{
+		printf("\n---------------------------------------------");		
+		printf("\n1.Create\n");
+		printf("2.Display\n");
+		printf("3.Exit\n");
+		printf("\nEnter your choice :");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:create();
+				break;
+			case 2:display();
+				break;
+			case 3:exit(0);
+			default:printf("Invalid choice\n");
+		}//switch
+	}//while
+}//main()
+
+-----------------------------------------------------------------------
+h.file
+
+#include<stdio.h>
+#include<stdlib.h>
+//Self Referential Structure
+struct node
+{
+	char data;
+	struct node *next;
+}*start;
+
+void create()
+{
+	struct node *temp,*q;
+	temp=(struct node*)malloc(sizeof(struct node));//temp:data|*next
+	printf("Enter the data :");
+	scanf(" %c",&temp->data);
+	temp->next=NULL;
+	if(start==NULL)
+	{
+		start=temp;
+	}
+	else
+	{
+		q=start;
+				      
+		while(q->next!=NULL)
+		{
+			q=q->next;
+		}
+		q->next=temp;
+	}		     
+			                         
+}//create()
+void display()
+{
+	struct node *temp;
+	temp=start;       
+			  
+	printf("Linked list is :");   
+	while(temp!=NULL)
+	{
+		printf("%c %d->",temp->data,temp->next);
+		temp=temp->next;
+	}
+				
+}//display()
+--------------------------------------------------------------
+2
+
+//.c file
+
+#include<stdio.h>
+#include "copy.h"
+int main(void)
+{
+    stack s1,t,s2;
+    init(&s1);
+    init(&s2);
+    init(&t);
+    int i,n,num;
+    printf("How many elements in stack1: ");
+    scanf("%d",&n);
+    printf("Enter element in stack1: ");
+    for(i=0;i<n;i++)
+    {
+        scanf("%d",&num);
+        push(&s1,num);   //pushing elements in stack1
+    }
+    while(!isempty(&s1))
+     {
+         push(&t,pop(&s1));   //pushing stack1 elements in temporary stack
+     }
+    while(!isempty(&t))
+     {
+         push(&s1,peek(&t));   //pushing temporary stack element in stack1
+         push(&s2,pop(&t));    //pushing temporary stack element in stack2
+     }
+     printf("\n-----Elements of stack1 is copied in stack2------\n");
+}
+-----------------------------------------------------------------------------
+//.h file
+
+typedef struct stack
+{
+    int data[200];
+    int top;
+} stack;
+void push(stack *ps,int num)
+{
+    ps->data[++ps->top]=num;
+}
+int pop(stack *ps)
+{
+    int num;
+    num=ps->data[ps->top--];
+    return num;
+}
+int isempty(stack *ps)
+{
+    if(ps->top==-1)
+        return 1;
+    return 0;
+}
+int isfull(stack *ps)
+{
+    if(ps->top==20-1)
+        return 1;
+    return 0;
+}
+int peek(stack *ps)
+{
+return ps->data[ps->top];
+}
+int init(stack *ps)
+{
+    ps->top=-1;
+}

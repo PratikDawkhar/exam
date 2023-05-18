@@ -1,0 +1,159 @@
+slip..18
+
+1.
+
+#include<stdio.h>
+#include<stdlib.h>
+void generate(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+	a[i]=rand()%100;
+}
+void display(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+		printf("  %d\t",a[i]);
+}
+void sort(int a[10],int n)
+{
+	int i,j,temp;
+	for(i=0;i<n-1;i++)
+	{
+		for(j=i+1;j<n;j++)
+		{
+			if(a[i]>a[j])
+			{
+				temp=a[i];
+				a[i]=a[j];
+				a[j]=temp;
+			}
+		}
+	}
+}
+void main()
+{
+	int i,a[10],n;
+	printf("Enter numbers of elements:");
+	scanf("%d",&n);
+	generate(a,n);
+	printf("Randomely generated elements are:\n");
+	display(a,n);
+	sort(a,n);
+	printf("\nSorted elements are:\n");
+	display(a,n);
+}
+---------------------------------------------------------------------
+2.
+
+#include<stdio.h>
+#include<malloc.h>
+struct link
+{
+       int coeff;
+       int pow;
+       struct link *next;	
+};
+
+struct link *poly1=NULL,*poly2=NULL,*poly=NULL;
+
+void create(struct link *node)
+{
+ 	char ch;
+ 	do
+ 	{
+	  printf("Enter coeff:");
+	  scanf("%d",&node->coeff);
+	  printf("Enter power:");
+	  scanf("%d",&node->pow);
+	  node->next=(struct link*)malloc(sizeof(struct link));
+	  node=node->next;					
+	  node->next=NULL;
+	  printf("Add more terms?(y/n):");
+	  scanf(" %c",&ch);
+ 	}while(ch=='y' || ch=='Y');
+}
+void show(struct link *node)
+{
+	 while(node->next!=NULL)
+	 {
+		  printf("%dX^%d",node->coeff,node->pow);
+		  node=node->next;
+		  if(node->next!=NULL)
+	   		printf("+");
+	 }
+}
+void polymult(struct link *poly1,struct link *poly2,struct link *poly)
+{
+     while(poly1->next &&  poly2->next)
+     {
+	      if(poly1->pow > poly2->pow)
+	      {
+		       poly->pow=poly1->pow;
+		       poly->coeff=poly1->coeff;
+		       poly1=poly1->next;
+	      }
+	      else if(poly1->pow<poly2->pow)
+	      {
+		       poly->pow=poly2->pow;
+		       poly->coeff=poly2->coeff;
+		       poly2=poly2->next;
+	      }
+	      else
+	      {
+		       poly->pow=poly1->pow;
+		       poly->coeff=poly1->coeff*poly2->coeff;
+		       poly->pow=poly1->pow*poly2->pow;
+		       poly1=poly1->next;
+		       poly2=poly2->next;
+	      }
+	      poly->next=(struct link *)malloc(sizeof(struct link));
+	      poly=poly->next;						
+	      poly->next=NULL;
+     }//while
+     while(poly1->next || poly2->next)
+     {
+	      if(poly1->next)
+	      {
+		       poly->pow=poly1->pow;
+		       poly->coeff=poly1->coeff;
+		       poly1=poly1->next;
+	      }
+	      if(poly2->next)
+	      {
+		       poly->pow=poly2->pow;
+		       poly->coeff=poly2->coeff;
+		       poly2=poly2->next;
+	       }
+	       poly->next=(struct link *)malloc(sizeof(struct link));
+	       poly=poly->next;
+	       poly->next=NULL;
+     }//while
+}//polyadd()
+
+int main()
+{
+      poly1=(struct link *)malloc(sizeof(struct link));
+      poly2=(struct link *)malloc(sizeof(struct link));
+      poly=(struct link *)malloc(sizeof(struct link));
+      printf("Enter First Polynomial:\n");
+      printf("---------------------------------------\n");
+      create(poly1);
+      printf("\n-------------------------------------\n");
+      printf("Enter Second Polynomial:\n");
+      printf("---------------------------------------\n");
+      create(poly2);
+      printf("---------------------------------------\n");
+      printf("First Polynomial:");
+      show(poly1);
+      printf("\n---------------------------------------\n");
+      printf("Second Polynomial:");
+      show(poly2);
+      polymult(poly1,poly2,poly);
+      printf("\n---------------------------------------\n");
+      printf("multiplied polynomial:");
+      show(poly);
+      printf("\n\n");
+      return 0;
+}

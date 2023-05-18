@@ -1,0 +1,201 @@
+slip..13
+
+1.
+//.c file
+
+#include<stdio.h>
+#include "stack.h"
+#include<stdlib.h>
+int main()
+{
+	int ch;
+	while(1)
+	{
+		printf("\n----Static Stack----\n");
+		printf("\n1.Init\n");
+		printf("2.Push\n");
+		printf("3.Pop\n");
+		printf("4.IsEmpty\n");
+		printf("5.IsFull\n");
+		printf("6.Peek\n");
+		printf("7.Exit\n");
+		printf("Enter your choice: ");
+		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1:init();  break;
+			case 2:push(); break;
+			case 3:pop(); break;
+			case 4:isempty(); break;
+			case 5:isfull(); break;
+			case 6:peek();break;
+			case 7:exit(0);
+		}//switch
+	}//while
+}//main()
+----------------------------------------------------------------------
+//.h file
+
+
+#include<stdio.h>
+#define MAX 3
+int number[MAX],top;
+
+void init()
+{
+	top=-1;//top=-1
+	printf("\nStatic stack is initialized\n");
+}
+
+void push()
+{
+	if(top==MAX-1)
+		printf("\nStack is full");
+	else
+	{
+		top++;//top 0 1 2
+		printf("Enter the number to be push:");
+		scanf("%d",&number[top]);//
+	}
+}
+
+void pop()
+{
+	if(top==-1)
+		printf("\nStack is empty\n");
+	else
+	{
+		printf("Poped value is:%d",number[top]);
+		top--;
+	}
+}
+
+void peek()
+{
+	if(top==-1)
+		printf("\nStack is empty\n");
+	else
+		printf("Value at top is:%d",number[top]);
+}
+
+void isempty()
+{
+	if(top==-1)
+		printf("\nStack is empty\n");
+	else
+		printf("\nStack is not empty\n");
+}
+
+void isfull()
+{
+	if(top==MAX-1)
+		printf("\nStack is full\n");
+	else
+		printf("\nStack is not full\n");
+}
+-----------------------------------------------------------------------------
+2.
+//.c file
+ 
+#include<stdio.h>
+#include<stdlib.h>
+#include"blinksort.h"
+void main()
+{
+	int menuno;
+	while(1)
+	{
+		printf("\n---------------------------------------------");
+		printf("\n 1.Create");
+		printf("\n 2.Display");
+		printf("\n 3.sort list");
+		printf("\n 4.Exit");
+		printf("\n Enter your choice:");
+		scanf("%d",&menuno);
+		switch(menuno)
+		{
+			case 1:	create();
+				break;
+			case 2:	display();
+				break;
+			case 3:	sort_list();
+				break;
+			case 4: exit(0);
+			default:printf("Invalid choice");
+		}//switch
+	}//while
+}//main()
+-----------------------------------------------------------------------------
+//.h file
+
+ struct node
+ {
+ 	int data;
+ 	struct node *next;
+ }*start=NULL,*q;
+ 
+ void create()
+ {
+ 	struct node *temp;
+ 	temp=(struct node *)malloc(sizeof(struct node));
+ 	printf("Enter number:");
+ 	scanf("%d",&temp->data);
+ 	temp->next=NULL;
+ 	if(start==NULL)
+ 		start=temp;
+ 	else
+ 	{
+ 		q=start;
+ 		while(q->next!=NULL)
+ 		{
+ 			q=q->next;
+ 		}
+ 		q->next=temp;
+ 	}
+ }
+ void display()
+ { 
+ 	if(start==NULL)
+ 		printf("List is empty \n");
+ 	else
+ 	{
+ 		q=start;
+ 		while(q!=NULL)
+ 		{
+ 			printf("%d ",q->data);
+ 			q=q->next;
+ 		}
+ 		printf("\n");
+ 	}
+ }
+ 
+
+void sort_list()
+{
+	int k;
+	struct node *i,*j,*head;
+	if(start==NULL)
+	{
+		printf("\nList is Empty\n");
+		return;
+	}
+	else
+	{
+		
+		head=start;
+		for(i=head;i->next!=NULL;i=i->next)
+		{
+			for(j=head;j->next!=NULL;j=j->next)
+			{
+				if(j->data > j->next->data)
+				{
+					k=j->data;
+					j->data=j->next->data;
+					j->next->data=k;
+				}
+			}
+		}
+		 
+	}
+	 
+}

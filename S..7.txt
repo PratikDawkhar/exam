@@ -1,0 +1,94 @@
+slip..7
+
+1..
+
+#include<stdio.h>
+#include<stdlib.h>
+void generate(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+	scanf("%d",&a[i]);
+}
+void display(int a[10],int n)
+{
+	int i;
+	for(i=0;i<n;i++)
+		printf("  %d\t",a[i]);
+}
+void sort(int a[10],int low,int high)
+{
+	int pivot,i,j,temp;
+	if(low<high)
+	{
+		pivot=low;
+		i=low+1;
+		j=high;
+		while(i<=j)
+		{
+			while(a[i]<=a[pivot] && i<=high)
+			i++;
+			while(a[j]>a[pivot] && j>=high)
+			j++;
+			if(i<j)
+			{
+				temp=a[i];
+				a[i]=a[j];
+				a[j]=temp;
+			}
+		}
+		temp=a[j];
+		a[j]=a[pivot];
+		a[pivot]=temp;
+		sort(a,low,j-1);
+		sort(a,j+1,high);
+	}
+}
+void main()
+{
+	int i,a[10],n;
+	printf("Enter numbers of elements:");
+	scanf("%d",&n);
+	generate(a,n);
+	printf("Randomely generated elements are:\n");
+	display(a,n);
+	sort(a,0,n-1);
+	printf("\nSorted elements are:\n");
+	display(a,n);
+}
+-------------------------------------------------------------------------
+
+2.
+
+#include <stdio.h>
+#include<string.h>
+#include <stdlib.h>
+#define max 20
+int top,stack[max];
+void push(char x)
+{
+	stack[++top]=x;
+}
+char pop()
+{
+	return stack[top--];
+}
+int main()
+{
+	char str[max];
+	int i;
+	printf("Enter a string:");
+	gets(str);//str=madam
+	for(i=0;i<strlen(str);i++)
+		push(str[i]);      
+	for(i=0;str[i]!='\0';i++)
+	{
+		if(str[i]!=pop())
+		{		 
+			   printf("Not Palindrome");
+			   exit(0);
+		}
+	}
+	printf("Palindrome");
+	return 0;
+}

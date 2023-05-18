@@ -1,0 +1,163 @@
+slip..9
+
+1..
+
+#include<stdio.h>
+#include<ctype.h>
+
+char stack[50];
+int top = -1;
+
+void push(char x)	
+{
+    top++;
+    stack[top] = x;
+}
+
+char pop()
+{
+    if(top == -1)
+	return -1;
+    else
+	return stack[top--];
+}
+
+int priority(char x)
+{
+    if(x == '(')
+	return 0;
+    if(x == '+' || x == '-')
+	return 1;
+    if(x == '*' || x == '/')
+	return 2;
+    if(x == '^')
+	return 3;
+    if(x == '$');
+    	return 4;
+    return 0;
+}
+
+int main()
+{
+    char exp[50];
+    char *e, x;
+    printf("Enter the infix expression : ");
+    scanf("%s",exp);
+    e = exp;
+    printf("The Postfix expression is:");
+    
+    while(*e != '\0')
+    {
+	if(isalnum(*e))
+	    printf("%c",*e);
+	else if(*e == '(')
+	    push(*e);
+	else if(*e == ')')
+	{
+	    while((x = pop()) != '(')
+		printf("%c", x);
+	}
+	else
+	{
+	    while(priority(stack[top]) >= priority(*e))
+		printf("%c",pop());
+	    push(*e);
+	}
+	e++;
+    }
+
+    while(top != -1)
+    {
+	printf("%c",pop());
+    }
+    printf("\n");
+    return 0;
+}
+//Enter the infix expression : (a+b)*c+(d-a)
+//ab+c*da-+
+//-------------
+//ab+c*da-+
+---------------------------------------------------------------------------------
+
+2.
+
+#include<stdio.h>
+typedef struct record
+{
+	char name[30];
+	int age;
+	int salary;
+}record;
+record a[20];
+int fileread()
+{
+	FILE *fp;
+	int i=0;
+	fp=fopen("employee.txt","r");
+	if(fp==NULL)
+		printf("File not exist\n");
+	else
+	{
+		while(!feof(fp))
+		{
+			fscanf(fp,"%s%d%d",a[i].name,&a[i].age,&a[i].salary);
+			i++;
+		}
+		fclose(fp);
+	}
+	return i-1;
+}
+void writefile(int n)
+{
+	int i=0;
+	FILE *fp;
+	if((fp=fopen("sortedemp.txt","w"))!=NULL)
+	{
+		for(i=0;i<n;i++)
+		{
+			fprintf(fp,"%s %d %d\n",a[i].name,a[i].age,a[i].salary);
+		}
+	}
+}
+void quicksort(int low,int high)
+{
+	int pivot,i,j;
+	record temp[20];
+	if(low<high)
+	{
+		pivot=low;
+		i=low+1;
+		j=high;
+		while(i<=j)
+		{
+			while(a[i].age <= a[pivot].age && i<=high)
+				i++;
+			while(a[j].age > a[pivot].age && j>=low)
+				j--;
+			if(i<j)
+			{
+				temp[0]=a[j];
+				a[i]=a[j];
+				a[j]=temp[0];
+			}
+		}
+		temp[0]=a[j];
+		a[j]=a[pivot];
+		a[pivot]=temp[0];
+		quicksort(low,j-1);
+		quicksort(j+1,high);
+	}
+}
+int main()
+{
+	int i,n;
+	n=fileread(a);
+	if(n>0)
+	{
+		for(i=0;i<n;i++)
+			printf("%s %d %d\n",a[i].name,a[i].age,a[i].salary);
+		quicksort(0,n-1);
+		writefile(n);
+	}
+}
+

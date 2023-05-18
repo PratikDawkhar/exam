@@ -1,0 +1,204 @@
+slip.1
+1
+
+#include<stdio.h> 
+#include"doubly.h"
+int main()
+{
+	int choice;
+	start=NULL;
+	while(1)
+	{
+		printf("\n---------------------------------------------");		
+		printf("\n1.Create\n");
+		printf("2.Display\n");
+		printf("3.delete_at_front\n");
+		printf("4.Delete at specifc Position\n");
+		printf("5.Delete Specific Element\n");
+		printf("6.Insert\n");
+		printf("7.Exit\n");
+		printf("\nEnter your choice :");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:create();
+				break;
+			case 2:display();
+				break;
+			case 3:delete_at_front();
+				break;
+			case 4:delete_at_specific();
+				break;
+			case 5:delete_element();
+				break;
+			case 6:insert();
+				break;
+			case 7:exit(0);
+			default:printf("Invalid choice\n");
+		}//switch
+	}//while
+}//main()
+
+----------------------------------------------------------------------------------
+.h  file
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+	int data;
+	struct node *prev,*next;
+}*start;
+
+void create()
+{
+	struct node *temp,*q;
+	temp=(struct node*)malloc(sizeof(struct node));//temp:prev|data|next
+	printf("Enter the data :");
+	scanf("%d",&temp->data);
+	temp->next=NULL;
+	temp->prev=NULL;
+	if(start==NULL)
+	{
+		start=temp;
+	}		   
+	else		   			
+	{
+		q=start;
+		while(q->next!=NULL)
+		{
+			q=q->next;
+		}
+		q->next=temp;
+		temp->prev=q;
+	}
+}
+void display()
+{
+	struct node *temp;
+	if(start==NULL)
+	{
+		printf("\nLinked list is empty !\n");
+	}
+	else		
+	{		
+		temp=start;
+		printf("Linked list is :");
+		while(temp!=NULL)
+		{
+			printf("%d|%d|%d ->",temp->prev,temp->data,temp->next);
+			temp=temp->next;
+		}
+	}
+}
+
+-------------------------------------------------------------------------------
+2..
+//.c
+//selection sort
+
+#include<stdio.h>
+#include<stdlib.h>
+#include"sort.h"
+void main()
+{
+	int menuno;
+	while(1)
+	{
+		printf("\n---------------------------------------------");
+		printf("\n1.Create");
+		printf("\n2.Display");
+		printf("\n3.Sort");
+		printf("\n4.Exit");
+		printf("\nEnter your choice:");
+		scanf("%d",&menuno);
+		switch(menuno)
+		{
+			case 1:	create();
+				break;
+			case 2:	display();
+				break;
+			case 3:	sort();
+				break;
+			case 4: exit(0);
+			default:printf("Invalid choice");
+		}//switch
+	}//while
+}
+
+------------------------------------------------------------------------------
+.h file
+
+//selection sort
+struct node
+ {
+ 	int data;
+ 	struct node *next;
+ }*start=NULL,*q;
+ 
+ void create()
+ {
+ 	struct node *temp;
+ 	temp=(struct node *)malloc(sizeof(struct node));
+ 	printf("Enter number:");
+ 	scanf("%d",&temp->data);
+ 	temp->next=NULL;
+ 	if(start==NULL)
+ 		start=temp;
+ 	else
+ 	{
+ 		q=start;
+ 		while(q->next!=NULL)
+ 		{
+ 			q=q->next;
+ 		}
+ 		q->next=temp;
+ 	}
+ }
+ void display()
+ { 
+ 	if(start==NULL)
+ 		printf("List is empty \n");
+ 	else
+ 	{
+ 		q=start;
+ 		while(q!=NULL)
+ 		{
+ 			printf("%d ",q->data);
+ 			q=q->next;
+ 		}
+ 		printf("\n");
+ 	}
+ }
+ 
+void sort()
+{
+	int k;
+	struct node *q,*temp;
+	if(start==NULL)
+	{
+		printf("\nList is Empty\n");
+		return;
+	}
+	else
+	{
+		
+		temp=start;
+		while(temp!=NULL)
+		{
+			q=temp->next;
+			while(q!=NULL)
+			{
+				if(temp->data > q->data)
+				{
+					k=temp->data;
+					temp->data=q->data;
+					q->data=k;
+				}
+				q=q->next;
+			}
+			temp=temp->next;
+		}
+	}
+	printf("Linked List is sorted:");
+}
